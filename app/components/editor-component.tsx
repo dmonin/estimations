@@ -6,7 +6,7 @@ import { Text } from '@tiptap/extension-text';
 import type { JSONContent} from '@tiptap/react';
 import { EditorContent, useEditor } from '@tiptap/react';
 import Mention from '@tiptap/extension-mention'
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import suggestion from './suggestion';
 import './style.css'
 
@@ -32,10 +32,19 @@ const EditorComponent: React.FC = () => {
       const result = calculateTotalHours(data, hashtags);
       setTotalHours(result);
       setByHashtag(hashtags);
-      console.log(editor.getHTML());
+      localStorage.setItem('content', editor.getHTML());
     },
-    content: '<ul><li>Start here</li></ul>',
+    content: '<ul><li>Start typing...</li></ul>',
   });
+
+  useEffect(() => {
+    const storedContent = localStorage.getItem('content');
+    if (editor) {
+      editor.commands.setContent(storedContent);
+    }
+
+
+  }, [editor]);
 
   const [totalHours, setTotalHours] = useState<number>(0);
   const [byHashtag, setByHashtag] = useState<Record<string, number>>({});
