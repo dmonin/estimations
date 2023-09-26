@@ -106,6 +106,12 @@ const EditorComponent: React.FC = () => {
     return hours;
   };
 
+  function reset() {
+    if (confirm('Are you sure you want to reset?')) {
+      editor?.commands.setContent(defaultContent);
+    }
+  }
+
   return (
     <div>
       <h1>ESTIMATIONS</h1>
@@ -121,6 +127,7 @@ const EditorComponent: React.FC = () => {
       <div className='estimation-content'>
         {editor && <EditorContent editor={editor} /> }
       </div>
+      <div><button onClick={reset}>Reset</button></div>
 
 
       <div className='results'>
