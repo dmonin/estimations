@@ -4,15 +4,12 @@ import tippy from 'tippy.js'
 import MentionList from './mention-list.jsx'
 
 export default {
-  char: '#',
+  char: '@',
   items: ({ query }) => {
     return [
-      'frontend-dev',
-      'backend-dev',
-      'fine-design',
-      'tech-concept',
-      'ux',
-      'marketing'
+      'Dmitry',
+      'Pär',
+      'Sascha'
     ]
       .filter(item => item.toLowerCase().startsWith(query.toLowerCase()))
       .slice(0, 5)

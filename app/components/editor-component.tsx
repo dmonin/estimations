@@ -3,12 +3,16 @@ import { Document } from '@tiptap/extension-document';
 import { ListItem } from '@tiptap/extension-list-item';
 import { Paragraph } from '@tiptap/extension-paragraph';
 import { Text } from '@tiptap/extension-text';
-import type { JSONContent} from '@tiptap/react';
+import type { JSONContent } from '@tiptap/react';
 import { EditorContent, useEditor } from '@tiptap/react';
+import React, { useEffect, useState } from 'react';
 import Mention from '@tiptap/extension-mention'
-import React, { useState, useEffect } from 'react';
 import suggestion from './suggestion';
-import './style.css'
+import type { Editor } from '@tiptap/core';
+
+import { HighlighterExtension } from './decorator';
+import './style.css';
+
 
 const EditorComponent: React.FC = () => {
   const [hourlyRate, setHourlyRate] = useState<number>(160);
@@ -19,20 +23,16 @@ const EditorComponent: React.FC = () => {
       Text,
       BulletList,
       ListItem,
+      HighlighterExtension,
       Mention.configure({
         HTMLAttributes: {
           class: 'mention',
         },
         suggestion,
-      }),
+      })
     ],
     onUpdate: ({ editor }) => {
-      const data = editor.getJSON();
-      const hashtags = {};
-      const result = calculateTotalHours(data, hashtags);
-      setTotalHours(result);
-      setByHashtag(hashtags);
-      localStorage.setItem('content', editor.getHTML());
+      update(editor);
     },
     content: '<ul><li>Start typing...</li></ul>',
   });
@@ -41,13 +41,22 @@ const EditorComponent: React.FC = () => {
     const storedContent = localStorage.getItem('content');
     if (editor) {
       editor.commands.setContent(storedContent);
+      update(editor);
     }
-
-
   }, [editor]);
 
   const [totalHours, setTotalHours] = useState<number>(0);
   const [byHashtag, setByHashtag] = useState<Record<string, number>>({});
+
+  function update(editor: Editor) {
+    const data = editor.getJSON();
+    const hashtags = {};
+    const result = calculateTotalHours(data, hashtags);
+    setTotalHours(result);
+    setByHashtag(hashtags);
+    localStorage.setItem('content', editor.getHTML());
+  }
+
   const calculateTotalHours = (data: JSONContent, hashtags: Record<string, number>): number => {
     let hours = 0;
     data.content?.forEach((node: JSONContent) => {
@@ -59,11 +68,22 @@ const EditorComponent: React.FC = () => {
             hours += parseFloat(match.slice(0, -1)); // remove the 'h' and convert to number
           });
         }
+
+        matches = node.text?.match(/#\w+/g);
+        if (matches) {
+          matches.forEach(match => {
+            if (!hashtags[match]) {
+              hashtags[match] = 0;
+            }
+            hashtags[match] += hours;
+          });
+        }
+
       } else if (node.type == 'mention') {
-        console.log('yes', node);
+
         // matching hashtags
         const id = node.attrs?.id;
-        console.log(id, hours);
+
         if (!id || !hours) {
           return;
         }
@@ -71,8 +91,6 @@ const EditorComponent: React.FC = () => {
           hashtags[id] = 0;
         }
         hashtags[id] += hours;
-
-
       } else {
         hours += calculateTotalHours(node, hashtags);
       }
@@ -92,7 +110,7 @@ const EditorComponent: React.FC = () => {
       <div>Total Hours: {totalHours}</div>
       <div>Total: {totalHours * hourlyRate} EUR</div>
       {Object.keys(byHashtag).map((hashtag) => {
-        return <div key={hashtag}>{hashtag}: {byHashtag[hashtag]}</div>;
+        return <div key={hashtag}>{hashtag}: {byHashtag[hashtag]}h, {byHashtag[hashtag] * hourlyRate} EUR</div>;
       })}
     </div>
   );

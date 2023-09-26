@@ -5,6 +5,11 @@
   }
 }
 
+.hashtag,
+.highlighted-text {
+  background: #e2e2f2;
+}
+
 p {
   margin: 0;
 }
