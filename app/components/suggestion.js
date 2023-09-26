@@ -6,6 +6,7 @@ import MentionList from './mention-list.jsx'
 export default {
   char: '@',
   items: ({ query }) => {
+    //TODO: this needs to come from somewhere else...
     return [
       'Dmitry',
       'Pär',
