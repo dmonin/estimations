@@ -101,17 +101,33 @@ const EditorComponent: React.FC = () => {
 
   return (
     <div>
-      {editor && <EditorContent editor={editor} /> }
-
+      <h1>Estimations</h1>
+      <p>What is your hourly rate?</p>
       <div>
-        <label>Hourly Rate</label>
+        <label>Hourly Rate (EUR)</label>
         <input type='number' value={hourlyRate} min={0} max={1000} step={5} onChange={(e) => setHourlyRate(parseFloat(e.target.value))} />
       </div>
-      <div>Total Hours: {totalHours}</div>
-      <div>Total: {totalHours * hourlyRate} EUR</div>
-      {Object.keys(byHashtag).map((hashtag) => {
-        return <div key={hashtag}>{hashtag}: {byHashtag[hashtag]}h, {byHashtag[hashtag] * hourlyRate} EUR</div>;
-      })}
+
+      <h2>How it works</h2>
+      <p>Use 1h, 2h, 5h to define hours. Use hashtags to define activities.</p>
+
+      <div className='estimation-content'>
+        {editor && <EditorContent editor={editor} /> }
+      </div>
+
+
+      <div className='results'>
+        {Object.keys(byHashtag).map((hashtag) => {
+          return <div key={hashtag} className='hashtag-result'><div><span className='hashtag'>{hashtag}</span>:</div><div>{byHashtag[hashtag]}h, {byHashtag[hashtag] * hourlyRate} EUR</div></div>;
+        })}
+
+        <div>Total Hours:</div>
+        <div><strong>{totalHours}h</strong></div>
+
+        <div>Total Cost:</div>
+        <div><strong>{totalHours * hourlyRate} EUR</strong></div>
+
+      </div>
     </div>
   );
 }

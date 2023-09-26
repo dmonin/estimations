@@ -1,8 +1,31 @@
+html, body {
+  font-family: 'IBM Plex Sans', sans-serif;
+}
+
+h2 {
+  margin-bottom: 0;
+}
+
+
 .tiptap {
   outline: none;
   > * + * {
     margin-top: 0.75em;
   }
+}
+
+input[type=number] {
+  border: 0px none;
+  border-bottom: 1px solid #999;
+  font: 'IBM Plex Mono';
+  width: 60px;
+}
+
+label {
+  color: #999;
+  font-weight: bold;;
+  display: block;
+  font-size: 70%;
 }
 
 .hashtag,
@@ -14,9 +37,36 @@ p {
   margin: 0;
 }
 
+ul {
+  margin: 0;
+  padding-left: 15px;
+}
+
+li {
+  margin: 0;
+}
+
+.estimation-content {
+  border: 1px solid #999;
+  border-radius: 5px;
+  padding: 15px;
+}
+
 .mention {
   border: 1px solid #000;
   border-radius: 0.4rem;
   box-decoration-break: clone;
   padding: 0.1rem 0.3rem;
+}
+
+.results {
+  margin-top: 100px;
+  border-top: 1px solid #000;
+  padding-top: 30px;
+  display: grid;
+  grid-template-columns: 150px 1fr;
+}
+
+.hashtag-result {
+  display: contents;
 }
