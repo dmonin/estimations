@@ -101,7 +101,7 @@ const EditorComponent: React.FC = () => {
 
   return (
     <div>
-      <h1>Estimations</h1>
+      <h1>ESTIMATIONS</h1>
       <p>What is your hourly rate?</p>
       <div>
         <label>Hourly Rate (EUR)</label>
