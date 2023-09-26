@@ -4,6 +4,8 @@ This a quick & simple tools to estimate projects, time and cost.
 You can try it online yourself to get an impression what it does:
 https://estimations.vercel.app/
 
+Note: All done in one evening, so don't expect too much, but maybe it's gonna be handy for you.
+
 ## How it works
 You can enter something like this:
 - My first prototype 4h #development
