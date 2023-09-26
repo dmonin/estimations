@@ -13,6 +13,11 @@ import type { Editor } from '@tiptap/core';
 import { HighlighterExtension } from './decorator';
 import './style.css';
 
+const defaultContent = [
+  '<ul><li>Develop estimation tool 3h #development</li>',
+  '<li>Make it look at little nicer 1h #design</li>',
+  '<li>Start typing here...</li></ul>'].join('');
+
 
 const EditorComponent: React.FC = () => {
   const [hourlyRate, setHourlyRate] = useState<number>(160);
@@ -34,13 +39,15 @@ const EditorComponent: React.FC = () => {
     onUpdate: ({ editor }) => {
       update(editor);
     },
-    content: '<ul><li>Start typing...</li></ul>',
+    content: defaultContent
   });
 
   useEffect(() => {
     const storedContent = localStorage.getItem('content');
-    if (editor) {
+    if (editor && storedContent) {
       editor.commands.setContent(storedContent);
+    }
+    if (editor) {
       update(editor);
     }
   }, [editor]);
