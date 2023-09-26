@@ -1,6 +1,18 @@
-# Welcome to Remix!
+# Estimation tool
+This a quick & simple tools to estimate projects, time and cost.
 
-- [Remix Docs](https://remix.run/docs)
+You can try it online yourself to get an impression what it does:
+https://estimations.vercel.app/
+
+## How it works
+You can enter something like this:
+- My first prototype 4h #development
+- Another thing 2h #design
+
+And it will give you a nice overview of the time and cost.
+
+You welcome. Enjoy! Star repo to say thanks :)
+
 
 ## Development
 
